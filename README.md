@@ -29,9 +29,7 @@ The following **additional** features are implemented:
 
 ## Video Walkthrough
 
-Here's a walkthrough of implemented required features:
-
-<img src='https://imgur.com/a/EZVoJRc.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+[Watch the Video Walkthrough](https://imgur.com/a/EZVoJRc)
 
 <!-- Replace this with whatever GIF tool you used! -->
 GIF created with peek
