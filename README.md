@@ -1,123 +1,184 @@
-# WEB103 Project 2 - *Top 5 Keyboards 2026*
+# WEB103 Project 3 - *Encore*
 
-Submitted by: **Alexander Pulido**
+Submitted by: **Alexander**
 
-About this web app: **A listicle web app that ranks the top 5 mechanical keyboards of 2026. The list items are stored in a Render-hosted PostgreSQL database, and the vanilla HTML/CSS/JavaScript frontend fetches them from an Express backend. Each keyboard has its own detail page, and users can search the list by keyboard name.**
+About this web app: **Encore is a virtual community space for live music. Pick one of several real-feeling venues — from an intimate indie lounge to a riverside amphitheater — and see every show happening (or that already happened) there. The front page is a visual grid of venue cards; each venue has its own page listing its events, and a stretch "All Events" page lets you filter by venue and sort by date. Upcoming shows display a live countdown, and past shows are dimmed and crossed out.**
 
-Time spent: **6** hours
+Time spent: **8** hours
+
+## Tech Stack
+
+- **Frontend:** React (Vite) + React Router
+- **Backend:** Node.js + Express
+- **Database:** PostgreSQL hosted on Render
+
+The database has two related tables:
+
+- `locations` — the venues
+- `events` — individual shows, each tied to a venue through a `location_id` foreign key
 
 ## Required Features
 
 The following **required** functionality is completed:
 
 <!-- Make sure to check off completed functionality below -->
-- [x] **The web app uses only HTML, CSS, and JavaScript without a frontend framework**
-- [x] **The web app is connected to a PostgreSQL database, with an appropriately structured database table for the list items**
-  - [x] **NOTE: Your walkthrough added to the README must include a view of your Render dashboard demonstrating that your Postgres database is available**
-  - [x]  **NOTE: Your walkthrough added to the README must include a demonstration of your table contents. Use the psql command 'SELECT * FROM tablename;' to display your table contents.**
 
+- [x] **The web app uses React to display data from the API**
+- [x] **The web app is connected to a PostgreSQL database, with an appropriately structured Events table**
+  - [x]  **NOTE: Your walkthrough added to the README must include a view of your Render dashboard demonstrating that your Postgres database is available**
+  - [x]  **NOTE: Your walkthrough added to the README must include a demonstration of your table contents. Use the psql command 'SELECT * FROM tablename;' to display your table contents.**
+- [x] **The web app displays a title.**
+- [x] **Website includes a visual interface that allows users to select a location they would like to view.**
+  - [x] *Note: A non-visual list of links to different locations is insufficient.*
+- [x] **Each location has a detail page with its own unique URL.**
+- [x] **Clicking on a location navigates to its corresponding detail page and displays list of all events from the `events` table associated with that location.**
 
 The following **optional** features are implemented:
 
-- [x] The user can search for items by a specific attribute
-  - Users can search keyboards by name from the home page. The query is sent to the backend and the filtering is done in the database with a `name ILIKE` query (the API also supports filtering by `layout` and `wireless`).
+- [x] An additional page shows all possible events
+  - [x] Users can sort *or* filter events by location.
+- [x] Events display a countdown showing the time remaining before that event
+  - [x] Events appear with different formatting when the event has passed (ex. negative time, indication the event has passed, crossed out, etc.).
 
 The following **additional** features are implemented:
 
-- [x] Each keyboard has its own server-rendered detail page (`/keyboard/:id`) showing price, layout, wireless support, and description, all pulled from the database.
-- [x] An `npm run reset` script that creates the table schema and seeds it from a single source of data.
+- [x] Live, second-by-second countdown timers that switch to "Ended Xd Xh ago" once a show passes
+- [x] Both **filter by venue** *and* **sort by date** (soonest / latest) on the All Events page
+- [x] Genre tags, ticket prices, artist names, and per-venue event counts
+- [x] Responsive dark "concert" theme with hover animations and a custom 404 page
+- [x] SPA deep-link support — refreshing a `/location/:id` URL still loads the app
 
 ## Video Walkthrough
 
-[Watch the Video Walkthrough](https://imgur.com/a/EZVoJRc)
+Here's a walkthrough of implemented required features:
 
-<!-- Replace this with whatever GIF tool you used! -->
-GIF created with peek
+
+<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+GIF created with ...  <!-- e.g. peek (Linux) -->
 <!-- Recommended tools:
-
+[Kap](https://getkap.co/) for macOS
+[ScreenToGif](https://www.screentogif.com/) for Windows
 [peek](https://github.com/phw/peek) for Linux. -->
 
-### Render dashboard (Postgres database is available)
+### Render dashboard (database available)
 
-<!-- TODO: Replace with a screenshot of your Render dashboard showing the
-     PostgreSQL instance with an "Available" status. -->
-![Render dashboard screenshot here](./client/src/assets/images/render-dashboard.png)
+<!-- TODO: Add a screenshot of your Render dashboard showing the PostgreSQL
+     instance with an "Available" status. -->
 
-### Table contents (`SELECT * FROM keyboards;`)
+![Render dashboard showing the PostgreSQL database available](add-your-render-dashboard-screenshot-here.png)
 
-<!-- TODO: Replace with a screenshot of your psql session running the query
-     below against your Render database. -->
+### Database table contents
+
+Run these from `psql` connected to your Render database and screenshot the output:
+
 ```sql
-SELECT * FROM keyboards;
+SELECT * FROM locations;
+SELECT * FROM events;
 ```
-![psql SELECT * FROM keyboards screenshot here](./client/src/assets/images/psql-table.png)
 
+<!-- TODO: Add a screenshot of the SELECT output below. -->
+
+![psql output of SELECT * FROM locations and events](add-your-table-contents-screenshot-here.png)
+
+## Project Structure & Running Locally
 
 ```
 codepath-web103/
-├── client/                     # Frontend (no framework)
-│   ├── index.html
-│   └── src/
-│       ├── assets/images/      # Keyboard images
-│       ├── css/style.css
-│       └── services/script.js  # Fetches data from the backend
-└── server/                     # Backend (Express + PostgreSQL)
-    ├── server.js               # App entry point, serves the client + routes
+├── client/                 # React (Vite) front end
+│   ├── src/
+│   │   ├── components/     # NavBar, LocationCard, EventCard, Countdown
+│   │   ├── pages/          # HomePage, LocationPage, EventsPage, NotFoundPage
+│   │   ├── services/api.js # fetch wrappers for the API
+│   │   ├── utils/dates.js  # date formatting + countdown logic
+│   │   └── css/index.css
+│   └── vite.config.js      # proxies /api -> http://localhost:3000
+└── server/                 # Express + PostgreSQL back end
     ├── config/
-    │   ├── database.js         # PostgreSQL connection pool (pg)
-    │   ├── data.js             # Seed data for the keyboards table
-    │   └── reset.js            # Creates + seeds the keyboards table
-    └── routes/
-        └── keyboards.js        # /keyboard API and detail routes
+    │   ├── database.js     # pg connection pool (reads .env)
+    │   ├── data.js         # seed data (venues + events)
+    │   └── reset.js        # creates + seeds the tables
+    ├── routes/
+    │   ├── locations.js    # GET /api/locations, GET /api/locations/:id
+    │   └── events.js       # GET /api/events, GET /api/events?location=:id
+    └── server.js
 ```
 
-## Database Schema if needed
+### 1. Configure the database
 
-The `keyboards` table:
+Create a PostgreSQL instance on [Render](https://render.com), then copy its
+**External Connection** values into `server/.env`:
 
-| Column      | Type            | Notes                  |
-| ----------- | --------------- | ---------------------- |
-| id          | SERIAL          | Primary key            |
-| name        | VARCHAR(255)    | NOT NULL               |
-| price       | NUMERIC(10, 2)  | NOT NULL               |
-| layout      | VARCHAR(50)     |                        |
-| wireless    | BOOLEAN         | NOT NULL DEFAULT false |
-| description | TEXT            |                        |
-| image       | VARCHAR(255)    |                        |
+```
+PGUSER=your_user
+PGPASSWORD=your_password
+PGHOST=your-host.oregon-postgres.render.com
+PGPORT=5432
+PGDATABASE=your_database
+```
 
+### 2. Install dependencies
 
-1. Create a PostgreSQL database on [Render](https://render.com/).
-2. In the `server/` folder, copy `.env.example` to `.env` and fill in the
-   connection details from your Render database's info page:
-   ```
-   PGUSER=...
-   PGPASSWORD=...
-   PGHOST=...
-   PGPORT=5432
-   PGDATABASE=...
-   ```
-3. Install dependencies and seed the database:
-   ```bash
-   cd server
-   npm install
-   npm run reset    # creates the keyboards table and seeds it
-   ```
-4. Start the server:
-   ```bash
-   npm start
-   ```
-5. Open [http://localhost:3000](http://localhost:3000).
+```bash
+cd server && npm install
+cd ../client && npm install
+```
+
+### 3. Seed the database
+
+```bash
+cd server
+npm run reset      # drops, creates, and seeds the locations + events tables
+```
+
+### 4. Run the app (two terminals)
+
+```bash
+# terminal 1 — API on http://localhost:3000
+cd server && npm start
+
+# terminal 2 — React dev server on http://localhost:5173
+cd client && npm run dev
+```
+
+Open **http://localhost:5173**. (For a production-style run, `npm run build` in
+`client/` and the Express server will serve the built app on port 3000.)
+
+## API Reference
+
+| Method | Endpoint                      | Description                                         |
+| ------ | ----------------------------- | --------------------------------------------------- |
+| GET    | `/api/locations`              | All venues                                          |
+| GET    | `/api/locations/:id`          | One venue plus its list of events                   |
+| GET    | `/api/events`                 | All events (joined with their venue name)           |
+| GET    | `/api/events?location=:id`    | Events filtered to a single venue                   |
 
 ## Notes
 
+Challenges encountered while building the app:
 
+- **Modeling the data as two related tables.** Events belong to a venue, so I
+  used a `location_id` foreign key with `ON DELETE CASCADE` and a `JOIN` on the
+  events endpoint so each event can show its venue name on the All Events page.
+- **Countdowns updating live.** The `Countdown` component uses a `setInterval`
+  inside `useEffect` (cleaned up on unmount) to re-render once per second, and
+  flips its formatting once an event's date is in the past.
+- **SPA routing on refresh.** Express serves the built React app and falls back
+  to `index.html` for any non-`/api` path so deep links like `/location/3`
+  survive a page refresh.
 
 ## License
 
-Copyright 2026 Alexander Pulido
+    Copyright 2026 Alexander
 
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
-> http://www.apache.org/licenses/LICENSE-2.0
+        http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.

@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "Backend for the Top 5 Keyboards listicle, served from a PostgreSQL database",
+  "description": "Encore API — live music venues and events, served from a PostgreSQL database",
   "main": "server.js",
   "type": "module",
   "scripts": {
