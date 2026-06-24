@@ -52,8 +52,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented required features:
 
-
-<img src='https://imgur.com/a/4amWFO7' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+[Watch the Video Walkthrough](https://imgur.com/a/4amWFO7)
 
 GIF created with ...  <!-- e.g. peek (Linux) -->
 
